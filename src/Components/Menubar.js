@@ -52,6 +52,7 @@ function Menubar() {
             </li>
           })
         }
+//         namaste
           <li>
             <div className="profile-details">
               <div className="profile-content">
