@@ -97,6 +97,7 @@
   font-weight: 400;
   color: #fff;
   transition: all 0.4s ease;
+  cursor: pointer;
 }
 .sidebar.close .nav-links li .cate-wrapper .link_name {
   opacity: 0;
@@ -118,6 +119,7 @@
   white-space: nowrap;
   opacity: 0.6;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 .sidebar .nav-links li .sub-menu a:hover {
   opacity: 1;
