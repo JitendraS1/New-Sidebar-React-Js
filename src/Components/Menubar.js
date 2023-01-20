@@ -5,15 +5,28 @@ function Menubar() {
   const sidebarRef = useRef(null);
   const sidebarBtnRef = useRef(null);
   const [menuData, setMenuData] = useState([]);
+  // const [isSubmenuOpen, setSubmenuOpen] = useState(false);
+  const [activeMenuId, setActiveMenuId] = useState(false)
 
-  const handleArrowClick = (e) => {
-    let arrowParent = e.target.parentElement.parentElement;
-    arrowParent.classList.toggle("showMenu");
+  const handleArrowClick = (e, id) => {
+    // e.stopPropogation();
+    // setSubmenuOpen(!isSubmenuOpen);
+    if (activeMenuId === false) {
+
+      setActiveMenuId(id);
+    } else {
+      setActiveMenuId(false)
+    }
+
+
   }
 
-  const handleSidebarBtnClick = () => {
+  const handleSidebarBtnClick = (e) => {
+
     sidebarRef.current.classList.toggle("close");
   }
+
+
 
   useEffect(() => {
     axios.get('https://gist.githubusercontent.com/lakehouseadmin/800fdf1f30cf202172a55d5c1daa1290/raw/b2b92dd9b051e7b2d4b916d2873c06a7aa1b9699/sidebar.json')
@@ -22,7 +35,6 @@ function Menubar() {
         setMenuData(response?.data?.data);
       });
   }, [])
-
 
   return (
 
@@ -36,23 +48,24 @@ function Menubar() {
         </div>
         <ul className="nav-links">{
           menuData?.map(item => {
-            return <li key={item.category.id}>
+            return <li key={item.category.id} onClick={(e) => handleArrowClick(e, item.category.id)} >
               <div className="iocn-link">
+                <div className='cate-wrapper'>
 
-                <a href="#">
                   <i><img src={item.category.ui_info.icon} alt="" /></i>
-                  <span className="link_name">{item.category.name}</span>
-                </a>
-                <i className='bx bxs-chevron-down arrow' onClick={handleArrowClick} />
+                  <span className="link_name" >{item.category.name}</span>
+
+                </div>
+                <i className='bx bxs-chevron-down arrow' ></i>
               </div>
-              <ul className="sub-menu">
+              <ul className={`sub-menu ${activeMenuId === item.category.id ? ' showMenu' : ''}`}>
                 <li><a className="link_name" href="#">{item.category.name}</a></li>
-                {item.sub_categories.map((t, index) => <li key={item.category.id + "sub_category_" + index}><a href={t.action_url}>{t.name}</a></li>)}
+                {item.sub_categories.map((subItem, index) => <li key={item.category.id + "sub_category_" + index}><a href={subItem.action_url}>{subItem.name}</a></li>)}
               </ul>
             </li>
+
           })
         }
-//         namaste
           <li>
             <div className="profile-details">
               <div className="profile-content">
@@ -79,3 +92,4 @@ function Menubar() {
 }
 
 export default Menubar
+
